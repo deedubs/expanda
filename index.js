@@ -22,6 +22,7 @@ expandUrl = function(url, options, callback) {
       expandUrl(response.headers.location, options, callback);
     }
   });
+  request.on('error',callback)
   request.end();
 }
 
