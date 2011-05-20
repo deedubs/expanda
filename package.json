@@ -12,7 +12,6 @@
     "node": "~v0.4.7"
   },
   "dependencies": {
-    "step":">=0.0.4"
   },
   "devDependencies": {
     "coffeescript": ">=1.1.0",

@@ -1,12 +1,12 @@
 var http = require('http')
   , parseUrl = require('url').parse
-  , Step = require('step');
+  , Expanda = {};
   
-pattern = /https?:\/\/(bit.ly|ow.ly|is.gd|t.co)\/\S+/g
-
-expandUrl = function(url, options, callback) {
+Expanda.pattern = /https?:\/\/(bit.ly|ow.ly|is.gd|t.co)\/\S+/g;
+  
+Expanda.expandUrl = function(url, options, callback) {
   if(!options)
-    options = {orignialUrl: url};
+    var options = {orignialUrl: url};
     
   var parsedUrl = parseUrl(url);
   var request = http.request({
@@ -19,33 +19,36 @@ expandUrl = function(url, options, callback) {
       callback(null,{old: options.orignialUrl, new: options.lastUrl})
     } else {
       options.lastUrl = response.headers.location;
-      expandUrl(response.headers.location, options, callback);
+      Expanda.expandUrl(response.headers.location, options, callback);
     }
   });
   request.on('error',callback)
   request.end();
 }
 
-module.exports = {
-  process: function(inputString, callback) {
-    var locatedUrls = inputString.match(pattern);
-    
-    Step(
-        function parseUrls() {
-          var group = this.group();
-          if(locatedUrls) {
-            locatedUrls.forEach(function(url){
-              expandUrl(url, false, group());
-            });
-          }
-        },
-        function(err, expandedUrls) {
-          outputString = inputString;
-          expandedUrls.forEach(function(replacement){
-            outputString = outputString.replace(replacement.old, replacement.new);
-          });
-          callback(null, outputString);
-        }
-      );
-  }
+Expanda.process = function(inputString, callback) {
+  var expandedCount = 0
+    , urls = []
+    , expandadUrls = []
+    , locatedUrls = inputString.match(Expanda.pattern);
+  if(!locatedUrls) {
+    callback(null, inputString, []);
+    return;
+  };
+  
+  locatedUrls.forEach(function(url) {
+    Expanda.expandUrl(url, false, function(err, expanded) {
+      expandadUrls.push(expanded);
+      urls.push(expanded.new);        
+      if(++expandedCount == locatedUrls.length) {
+        var outputString = inputString;       
+        expandadUrls.forEach(function(replacement){
+          outputString = outputString.replace(replacement.old, replacement.new);
+        });
+        callback(null, outputString, urls);
+      } 
+    })
+  })
 }
+
+module.exports = Expanda;
