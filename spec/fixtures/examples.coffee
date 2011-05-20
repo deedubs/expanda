@@ -5,3 +5,6 @@ module.exports =
   bitly : 
     input  : 'I checked in at Q Smokehouse & Southern Barbecue (1580 Argyle St) on #Yelp http://bit.ly/hc6cZl'
     output : 'I checked in at Q Smokehouse & Southern Barbecue (1580 Argyle St) on #Yelp http://www.yelp.ca/biz/q-smokehouse-and-southern-barbecue-halifax'
+  isgd :
+    input : 'This is an interesting map http://is.gd/kCe1qR'
+    output : 'This is an interesting map http://maps.google.co.uk/maps?f=q&source=s_q&hl=en&geocode=&q=louth&sll=53.800651,-4.064941&sspn=33.219383,38.803711&ie=UTF8&hq=&hnear=Louth,+United+Kingdom&z=14'

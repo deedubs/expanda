@@ -16,4 +16,8 @@ vows
       topic: -> Expando.process examples.bitly.input, @callback
       'should have the expected url' : (err, output) ->
         assert.equal output, examples.bitly.output
+    'is.gd' :
+      topic: -> Expando.process examples.isgd.input, @callback
+      'should have the expected url' : (err, output) ->
+        assert.equal output, examples.isgd.output
   .export module

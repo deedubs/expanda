@@ -2,7 +2,7 @@ var http = require('http')
   , parseUrl = require('url').parse
   , Step = require('step');
   
-pattern = /https?:\/\/(bit.ly|ow.ly)\/\S+/g
+pattern = /https?:\/\/(bit.ly|ow.ly|is.gd)\/\S+/g
 
 expandUrl = function(url, options, callback) {
   if(!options)
@@ -32,9 +32,11 @@ module.exports = {
     Step(
         function parseUrls() {
           var group = this.group();
-          locatedUrls.forEach(function(url){
-            expandUrl(url, false, group());
-          });
+          if(locatedUrls) {
+            locatedUrls.forEach(function(url){
+              expandUrl(url, false, group());
+            });
+          }
         },
         function(err, expandedUrls) {
           outputString = inputString;
