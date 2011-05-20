@@ -1,0 +1,21 @@
+{
+  "author": "Dan Williams <dan@rocketlabsdev.com> (http://blog.rocketlabsdev.com/)",
+  "name": "expanda",
+  "description": "Expand tiny urls in a string",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "http://github.com/rocketlabsdev/expanda.git"
+  },
+  "main": "./index.js",
+  "engines": {
+    "node": "~v0.4.7"
+  },
+  "dependencies": {
+    "step":">=0.0.4"
+  },
+  "devDependencies": {
+    "coffeescript": ">=1.1.0",
+    "vows": "'>=0.5.8"
+  }
+}
