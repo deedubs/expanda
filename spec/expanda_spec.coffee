@@ -20,4 +20,8 @@ vows
       topic: -> Expando.process examples.isgd.input, @callback
       'should have the expected url' : (err, output) ->
         assert.equal output, examples.isgd.output
+    't.co' :
+      topic: -> Expando.process examples.tco.input, @callback
+      'should have the expected url' : (err, output) ->
+        assert.equal output, examples.tco.output
   .export module

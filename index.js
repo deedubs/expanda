@@ -2,7 +2,7 @@ var http = require('http')
   , parseUrl = require('url').parse
   , Step = require('step');
   
-pattern = /https?:\/\/(bit.ly|ow.ly|is.gd)\/\S+/g
+pattern = /https?:\/\/(bit.ly|ow.ly|is.gd|t.co)\/\S+/g
 
 expandUrl = function(url, options, callback) {
   if(!options)
