@@ -2,9 +2,7 @@ var http = require('http')
   , parseUrl = require('url').parse
   , Expanda = {};
   
-Expanda.pattern = /https?:\/\/(bit.ly|ow.ly|is.gd|t.co)\/\S+/g;
-  
-Expanda.expandUrl = function(url, options, callback) {
+expandUrl = function(url, options, callback) {
   if(!options)
     var options = {orignialUrl: url};
     
@@ -16,33 +14,37 @@ Expanda.expandUrl = function(url, options, callback) {
   , method: 'HEAD'
   }, function(response) {
     if(!response.headers.location) {
-      callback(null,{old: options.orignialUrl, new: options.lastUrl})
+      callback(null,{old: options.orignialUrl, new: options.lastUrl || options.orignialUrl})
     } else {
       options.lastUrl = response.headers.location;
-      Expanda.expandUrl(response.headers.location, options, callback);
+      expandUrl(response.headers.location, options, callback);
     }
   });
   request.on('error',callback)
   request.end();
 }
 
-Expanda.process = function(inputString, callback) {
+module.exports = function(inputString, pattern, callback) {
   var expandedCount = 0
     , urls = []
-    , expandadUrls = []
-    , locatedUrls = inputString.match(Expanda.pattern);
+    , expandaUrls = [];
+
+  if (!(pattern instanceof RegExp))
+    callback = pattern, pattern = /https?:\/\/(bit.ly|ow.ly|is.gd|t.co)\/\S+/g;
+  
+  var locatedUrls = inputString.match(pattern);
   if(!locatedUrls) {
     callback(null, inputString, []);
     return;
   };
   
   locatedUrls.forEach(function(url) {
-    Expanda.expandUrl(url, false, function(err, expanded) {
-      expandadUrls.push(expanded);
+    expandUrl(url, false, function(err, expanded) {
+      expandaUrls.push(expanded);
       urls.push(expanded.new);        
       if(++expandedCount == locatedUrls.length) {
         var outputString = inputString;       
-        expandadUrls.forEach(function(replacement){
+        expandaUrls.forEach(function(replacement){
           outputString = outputString.replace(replacement.old, replacement.new);
         });
         callback(null, outputString, urls);
@@ -50,5 +52,3 @@ Expanda.process = function(inputString, callback) {
     })
   })
 }
-
-module.exports = Expanda;
