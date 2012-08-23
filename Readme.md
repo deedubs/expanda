@@ -1,3 +1,4 @@
+[![build status](https://secure.travis-ci.org/rocketlabsdev/expanda.png)](http://travis-ci.org/rocketlabsdev/expanda)
 
 # Expanda
 
